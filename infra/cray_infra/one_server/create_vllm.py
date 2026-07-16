@@ -15,7 +15,7 @@ from vllm.entrypoints.launcher import serve_http
 from vllm.entrypoints.openai.cli_args import make_arg_parser
 from vllm.utils.argparse_utils import FlexibleArgumentParser
 
-from vllm.entrypoints.utils import (log_non_default_args)
+from vllm.entrypoints.serve.utils.api_utils import log_non_default_args
 import vllm.envs as envs
 
 import uvicorn
@@ -97,7 +97,7 @@ async def run_server(server_status, args, **uvicorn_kwargs) -> None:
     # Add process-specific prefix to stdout and stderr.
     decorate_logs("APIServer")
 
-    listen_address, sock = setup_server(args)
+    listen_address, sock = setup_server(args, reuse_port=False)
     await run_server_worker(server_status, listen_address, sock, args, **uvicorn_kwargs)
 
 async def run_server_worker(server_status, listen_address,

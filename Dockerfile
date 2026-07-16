@@ -163,6 +163,9 @@ ENV CMAKE_BUILD_TYPE=Release
 # vLLM dependencies
 COPY ./infra/requirements-vllm.txt ${INSTALL_ROOT}/requirements-vllm.txt
 RUN uv pip install --no-compile --no-cache-dir -r ${INSTALL_ROOT}/requirements-vllm.txt && \
+    uv pip install --no-compile --no-cache-dir \
+        torch==2.11.0 torchvision==0.26.0 torchaudio==2.11.0 \
+        --index-url https://download.pytorch.org/whl/cu130 && \
     python ${INSTALL_ROOT}/vllm/use_existing_torch.py
 
 RUN \
